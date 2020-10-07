@@ -1,26 +1,16 @@
 #pragma once
-
-class Game;
+#include "game_object.hpp"
 
 
 // Player class, associated with game class
-class Player {
-private:
-    // Player x, y coordinates on game window screen
-    int x, y;
-    // Player character
-    const char player_ch = '#';
-
-    // Game pointer
-    Game* game;
-
+class Player : GameObject {
 public:
     Player(const int x, const int y, Game* game);
     ~Player();
 
     // Change current position by vector {dx, dy}
     bool go(const int dx, const int dy);
+    void update(const int elapsed);
 private:
-    // Change position to new
-    bool changePos(const int nx, const int ny);
+    void shoot();
 };

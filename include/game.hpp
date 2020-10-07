@@ -1,10 +1,12 @@
+#pragma once
 #include <ncurses.h>
 #include <iostream>
 #include <vector>
 #include <string>
 
 #include "player.hpp"
-
+#include "bullet.hpp"
+#include "entity_manager.hpp"
 
 // Main game class, controls the whole game
 class Game {
@@ -14,48 +16,34 @@ private:
     const int height = 21;
 
     // Game window characters
-    std::vector<std::string> win = {
-        "+-----------------------------------------------------------+",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "|                                                           |",
-        "+------------------ ilshat25/alien -------------------------+"
-    };
+    std::vector<std::vector<int>> win;
+    // Game window title
+    std::string win_title = " ilshat25/alien ";
 
-    // Player
     Player player;
-
+    EntityManager entity_manager;
 
 public:
     Game();
     ~Game();
 
-    void update();
+    void update(const int elapsed);
     void draw();
 
     // Check for game over
     bool isOver();
     // Check for border at position (x, y)
     bool isBorder(const int x, const int y);
+    // Check for free cell at position (x, y)
+    bool isFree(const int x, const int y);
+
+    EntityManager* getEntityManager();
 
     // Set character ch at position (x, y)
-    bool setCh(const int x, const int y, const char ch);
+    bool setCh(const int x, const int y, const int ch);
     // Clear position (x, y)
     bool clearCh(const int x, const int y);
+private:
+    // Initialize game window by border and title
+    void initWin();
 };

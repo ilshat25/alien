@@ -4,10 +4,12 @@
 using namespace std;
 
 void curses_init() {
+    setlocale(LC_CTYPE, "");
     initscr();
-    refresh();
+    noecho();
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
+    curs_set(0);
 }
 
 int main(int argc, char** argv) {
@@ -20,7 +22,7 @@ int main(int argc, char** argv) {
     Game game;
     // Main game cycle
     while(!game.isOver()) {
-        game.update();
+        game.update(delay);
         game.draw();
         usleep(delay);
     }
