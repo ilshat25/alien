@@ -5,7 +5,6 @@
 #include <string>
 
 #include "player.hpp"
-#include "bullet.hpp"
 #include "entity_manager.hpp"
 
 // Main game class, controls the whole game
@@ -23,6 +22,9 @@ private:
     Player player;
     EntityManager entity_manager;
 
+    // Asteroid interval
+    const int asteroid_interval = 1000000;
+    int elapsed_time;
 public:
     Game();
     ~Game();
@@ -46,4 +48,7 @@ public:
 private:
     // Initialize game window by border and title
     void initWin();
+    // Generate new layer of asteroids
+    void generateAsteroids();
+
 };

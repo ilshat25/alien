@@ -9,5 +9,6 @@ public:
     ~Bullet();
 
     void update(const int elapsed);
+private:
     bool move();
 };

@@ -1,5 +1,7 @@
 #include "entity_manager.hpp"
 #include "game.hpp"
+#include "bullet.hpp"
+#include "asteroid.hpp"
 
 
 // Public methods
@@ -18,6 +20,9 @@ void EntityManager::addEntity(const int x, const int y, const EntityType type) {
     switch(type) {
         case EntityType::BULLET:
             entity_to_push = new Bullet(x, y, game);
+            break;
+        case EntityType::ASTEROID:
+            entity_to_push = new Asteroid(x, y, game);
             break;
     }
 

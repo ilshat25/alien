@@ -2,6 +2,9 @@
 #include "game.hpp"
 #include "ncurses.h"
 
+
+// Public methods
+
 Bullet::Bullet(const int x, const int y, Game* game):
     Entity(x, y, ACS_BULLET, game)
 {}
@@ -16,6 +19,8 @@ void Bullet::update(const int elapsed) {
         elapsed_time -= interval;
     }
 }
+
+// Private methods
 
 bool Bullet::move() {
     return changePos(x + 1, y);

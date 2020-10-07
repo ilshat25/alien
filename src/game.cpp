@@ -5,22 +5,28 @@
 
 Game::Game():
     player(width / 2, height / 2, this),
-    entity_manager(this)
+    entity_manager(this),
+    elapsed_time(0)
 {
     initWin();
 }
 
-Game::~Game() {
-    std::cout << "Game destructor\n";
-}
+Game::~Game() {}
 
 void Game::update(const int elapsed) {
+    elapsed_time += elapsed;
+
+    if (elapsed_time > asteroid_interval) {
+        generateAsteroids();
+        elapsed_time -= asteroid_interval;
+    }
+
     player.update(elapsed);
     entity_manager.update(elapsed);
-    refresh();
 }
 
 void Game::draw() {
+    refresh();
     for (int col = 0; col < width; ++col)
         for (int row = 0; row < height; ++row) {
             move(row, col);
@@ -95,4 +101,9 @@ void Game::initWin() {
     int carriage_title = width / 2 - win_title.size() / 2;
     for (char ch : win_title)
         win[height-1][carriage_title++] = ch;
+}
+
+void Game::generateAsteroids() {
+    for (int row = 1; row < height - 1; ++row) if(rand() % 100 >= 80)
+        entity_manager.addEntity(width - 1, row, EntityType::ASTEROID);
 }

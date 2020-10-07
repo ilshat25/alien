@@ -4,7 +4,8 @@
 #include "entity.hpp"
 
 enum class EntityType {
-    BULLET
+    BULLET,
+    ASTEROID
 };
 
 
