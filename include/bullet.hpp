@@ -9,6 +9,8 @@ public:
     ~Bullet();
 
     void update(const int elapsed);
+
+    void onCollision(const EntityType type);
 private:
     bool move();
 };

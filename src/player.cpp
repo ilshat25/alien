@@ -4,7 +4,7 @@
 // Public methods
 
 Player::Player(const int x, const int y, Game* game):
-    GameObject(x, y, ACS_BOARD, game)
+    Entity(x, y, ACS_BOARD, EntityType::PLAYER, game)
 {}
 
 Player::~Player() {}
@@ -14,7 +14,7 @@ bool Player::go(const int dx, const int dy) {
 }
 
 void Player::update(const int elapsed) {
-    GameObject::update(elapsed);
+    Entity::update(elapsed);
 
     const int ch = getch();
 
@@ -36,6 +36,12 @@ void Player::update(const int elapsed) {
             break;
     }
 }
+
+void Player::onCollision(const EntityType type) {
+
+}
+
+// Private methods
 
 void Player::shoot() {
     game->getEntityManager()->addEntity(x + 1, y, EntityType::BULLET);

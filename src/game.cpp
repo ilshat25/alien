@@ -4,11 +4,11 @@
 // Public methods
 
 Game::Game():
-    player(width / 2, height / 2, this),
     entity_manager(this),
     elapsed_time(0)
 {
     initWin();
+    entity_manager.addEntity(width / 2, height / 2, EntityType::PLAYER);
 }
 
 Game::~Game() {}
@@ -21,7 +21,6 @@ void Game::update(const int elapsed) {
         elapsed_time -= asteroid_interval;
     }
 
-    player.update(elapsed);
     entity_manager.update(elapsed);
 }
 

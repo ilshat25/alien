@@ -5,7 +5,7 @@
 // Public methods
 
 Asteroid::Asteroid(const int x, const int y, Game* game):
-    Entity(x, y, ACS_DIAMOND, game)
+    Entity(x, y, ACS_DIAMOND, EntityType::ASTEROID, game)
 {}
 
 Asteroid::~Asteroid() {}
@@ -19,6 +19,9 @@ void Asteroid::update(const int elapsed) {
     }
 }
 
+void Asteroid::onCollision(const EntityType type) {
+    setDead();
+}
 
 // Private methods
 

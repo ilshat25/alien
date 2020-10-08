@@ -19,7 +19,6 @@ private:
     // Game window title
     std::string win_title = " ilshat25/alien ";
 
-    Player player;
     EntityManager entity_manager;
 
     // Asteroid interval

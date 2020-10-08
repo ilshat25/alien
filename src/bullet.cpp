@@ -6,7 +6,7 @@
 // Public methods
 
 Bullet::Bullet(const int x, const int y, Game* game):
-    Entity(x, y, ACS_BULLET, game)
+    Entity(x, y, ACS_BULLET, EntityType::BULLET, game)
 {}
 
 Bullet::~Bullet() {}
@@ -18,6 +18,10 @@ void Bullet::update(const int elapsed) {
         if (!move()) setDead();
         elapsed_time -= interval;
     }
+}
+
+void Bullet::onCollision(const EntityType) {
+    setDead();
 }
 
 // Private methods

@@ -8,6 +8,7 @@ GameObject::GameObject(const int x, const int y, const int object_ch, Game* game
     game(game)
 {
     elapsed_time = 0;
+    changePos(x, y);
 }
 
 GameObject::~GameObject() {}
