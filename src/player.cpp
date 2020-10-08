@@ -17,7 +17,8 @@ void Player::update(const int elapsed) {
     Entity::update(elapsed);
 
     const int ch = getch();
-
+    if (ch != -1)
+        std::cerr << "|" << ch << "|" << '\n';
     switch(ch) {
         case KEY_UP:
             go(0, -1);
@@ -38,11 +39,12 @@ void Player::update(const int elapsed) {
 }
 
 void Player::onCollision(const EntityType type) {
-
+    setDead();
 }
 
 // Private methods
 
 void Player::shoot() {
+    std::cerr << "Shoot!\n";
     game->getEntityManager()->addEntity(x + 1, y, EntityType::BULLET);
 }

@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 
-#include "player.hpp"
 #include "entity_manager.hpp"
 
 // Main game class, controls the whole game
@@ -16,10 +15,14 @@ private:
 
     // Game window characters
     std::vector<std::vector<int>> win;
-    // Game window title
-    std::string win_title = " ilshat25/alien ";
 
+    // Entity Manager
     EntityManager entity_manager;
+
+    // Game over flag
+    bool is_over;
+    // Stop game flag
+    bool is_stopped;
 
     // Asteroid interval
     const int asteroid_interval = 1000000;
@@ -44,10 +47,22 @@ public:
     bool setCh(const int x, const int y, const int ch);
     // Clear position (x, y)
     bool clearCh(const int x, const int y);
+
+    // Stop the game
+    void stop();
+    // Resume the game
+    void resume();
 private:
     // Initialize game window by border and title
     void initWin();
+    // Game over screen
+    void gameOverScreen();
+
     // Generate new layer of asteroids
     void generateAsteroids();
-
+    
+    // Restart the game
+    void restart();
+    // Exit from the game
+    void exit();
 };

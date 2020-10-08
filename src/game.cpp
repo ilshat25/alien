@@ -5,6 +5,8 @@
 
 Game::Game():
     entity_manager(this),
+    is_over(false),
+    is_stopped(false),
     elapsed_time(0)
 {
     initWin();
@@ -14,14 +16,37 @@ Game::Game():
 Game::~Game() {}
 
 void Game::update(const int elapsed) {
-    elapsed_time += elapsed;
+    if (!is_stopped) {
+        elapsed_time += elapsed;
 
-    if (elapsed_time > asteroid_interval) {
-        generateAsteroids();
-        elapsed_time -= asteroid_interval;
+        // Generate new layer of asteroids if interval is passed
+        if (elapsed_time > asteroid_interval) {
+            generateAsteroids();
+            elapsed_time -= asteroid_interval;
+        }
+
+        // Update all entities
+        entity_manager.update(elapsed);
+        
+        if (entity_manager.getPlayer()->isDead()) {
+            // Stop the game
+            stop();
+            // Show game over screen
+            gameOverScreen();
+        }
+    }
+    else {  // If game is stopped
+        char ans = getch();
+        switch (ans) {
+            case 'y':
+                restart();
+                break;
+            case 'n':
+                exit();
+                break;
+        }
     }
 
-    entity_manager.update(elapsed);
 }
 
 void Game::draw() {
@@ -34,7 +59,7 @@ void Game::draw() {
 }
 
 bool Game::isOver() {
-    return false;
+    return is_over;
 }
 
 bool Game::isBorder(const int x, const int y) {
@@ -63,6 +88,14 @@ bool Game::setCh(const int x, const int y, const int ch) {
 
 bool Game::clearCh(const int x, const int y) {
     return setCh(x, y, ' ');
+}
+
+void Game::stop() {
+    is_stopped = true;
+}
+
+void Game::resume() {
+    is_stopped = false;
 }
 
 // Private methods
@@ -96,13 +129,57 @@ void Game::initWin() {
                 // Void
                 win[row][col] = ' ';
 
+    std::string win_title = " ilshat25/alien ";
     // Set title
     int carriage_title = width / 2 - win_title.size() / 2;
     for (char ch : win_title)
         win[height-1][carriage_title++] = ch;
 }
 
+void Game::gameOverScreen() {
+    // Set border
+    for(int col = 1; col < width - 1; ++col) {
+        win[height / 2 - 2][col] = '#';
+        win[height / 2 - 1][col] = ' ';
+        win[height / 2    ][col] = ' ';
+        win[height / 2 + 1][col] = ' ';
+        win[height / 2 + 2][col] = '#';
+    }
+
+    std::string game_over_title = "Game over";
+    // Set title
+    int carriage_title = width / 2 - game_over_title.size() / 2;
+    for (char ch : game_over_title)
+        win[height / 2 - 1][carriage_title++] = ch;
+
+    std::string restart_title = "Do you want to restart? y/n";
+    // Set restart offer
+    carriage_title = width / 2 - restart_title.size() / 2;
+    for (char ch : restart_title)
+        win[height / 2 + 1][carriage_title++] = ch;
+
+}
+
 void Game::generateAsteroids() {
     for (int row = 1; row < height - 1; ++row) if(rand() % 100 >= 80)
         entity_manager.addEntity(width - 1, row, EntityType::ASTEROID);
+}
+
+void Game::restart() {
+    // Release all entities
+    entity_manager.clear();
+    // Clear win
+    win.clear();
+    // Init win
+    initWin();
+    // Add player
+    entity_manager.addEntity(width / 2, height / 2, EntityType::PLAYER);
+    // Set elapsed time to 0
+    elapsed_time = 0;
+    // Resume the game
+    resume();
+}
+
+void Game::exit() {
+    is_over = true;
 }

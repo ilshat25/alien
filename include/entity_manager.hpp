@@ -15,6 +15,8 @@ class EntityManager {
 private:
     // Vector of entities
     std::vector<Entity*> entities;
+    // Vector of entities to add
+    std::vector<Entity*> to_add;
 
     // Palyer entity or null if it doesn't exist
     Entity* player;
@@ -31,6 +33,9 @@ public:
     Entity* getPlayer();
 
     void update(const int elapsed);
+
+    // Release all entities
+    void clear();
 private:
     // Release all entities and associated memory
     void releaseAll();

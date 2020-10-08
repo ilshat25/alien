@@ -2,7 +2,7 @@
 #include "game.hpp"
 #include "bullet.hpp"
 #include "asteroid.hpp"
-
+#include "player.hpp"
 
 // Public methods
 
@@ -16,7 +16,7 @@ EntityManager::~EntityManager() {
 }
 
 void EntityManager::addEntity(const int x, const int y, const EntityType type) {
-    Entity* entity_to_push;
+    Entity* entity_to_push = nullptr;
     
     switch(type) {
         case EntityType::PLAYER:
@@ -33,25 +33,39 @@ void EntityManager::addEntity(const int x, const int y, const EntityType type) {
             break;
     }
 
-    entities.push_back(entity_to_push);
+    to_add.push_back(entity_to_push);
+}
+
+Entity* EntityManager::getPlayer() {
+    return player;
 }
 
 void EntityManager::update(const int elapsed) {
     releaseDead();
     for (Entity* entity : entities)
         entity->update(elapsed);
+
+    // Add entities
+    for (Entity* entity : to_add)
+        entities.push_back(entity);
+    to_add.clear();
+
     resolveCollisions();
+}
+
+void EntityManager::clear() {
+    releaseAll();
+    player = nullptr;
 }
 
 // Private methods
 
 void EntityManager::releaseAll() {
-    while(entities.begin() != entities.end()) {
-        Entity* entity = *(entities.end() - 1);
-        entities.erase(entities.begin());
+    for (Entity* entity : entities){
         entity->kill();
         delete entity;
     }
+    entities.clear();
 }
 
 void EntityManager::releaseDead() {
