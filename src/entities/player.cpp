@@ -1,10 +1,11 @@
-#include "player.hpp"
+#include "entities/player.hpp"
 #include "game.hpp"
 
 // Public methods
 
 Player::Player(const int x, const int y, Game* game):
-    Entity(x, y, ACS_BOARD, EntityType::PLAYER, game)
+    EntityBase(x, y, ACS_BOARD, EntityType::PLAYER, game),
+    bullet_count(3)
 {}
 
 Player::~Player() {}
@@ -14,11 +15,9 @@ bool Player::go(const int dx, const int dy) {
 }
 
 void Player::update(const int elapsed) {
-    Entity::update(elapsed);
+    EntityBase::update(elapsed);
 
     const int ch = getch();
-    if (ch != -1)
-        std::cerr << "|" << ch << "|" << '\n';
     switch(ch) {
         case KEY_UP:
             go(0, -1);
@@ -42,9 +41,19 @@ void Player::onCollision(const EntityType type) {
     setDead();
 }
 
+void Player::addBullet() {
+    if (bullet_count < max_bullet_count) ++bullet_count;
+}
+
+int Player::getBulletCount() {
+    return bullet_count;
+}
+
 // Private methods
 
 void Player::shoot() {
-    std::cerr << "Shoot!\n";
-    game->getEntityManager()->addEntity(x + 1, y, EntityType::BULLET);
+    if (bullet_count > 0) {
+        game->getEntityManager()->addEntity(x + 1, y, EntityType::BULLET);
+        --bullet_count;
+    }
 }

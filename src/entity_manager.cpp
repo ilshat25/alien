@@ -1,8 +1,6 @@
 #include "entity_manager.hpp"
 #include "game.hpp"
-#include "bullet.hpp"
-#include "asteroid.hpp"
-#include "player.hpp"
+
 
 // Public methods
 
@@ -16,7 +14,7 @@ EntityManager::~EntityManager() {
 }
 
 void EntityManager::addEntity(const int x, const int y, const EntityType type) {
-    Entity* entity_to_push = nullptr;
+    EntityBase* entity_to_push = nullptr;
     
     switch(type) {
         case EntityType::PLAYER:
@@ -36,17 +34,17 @@ void EntityManager::addEntity(const int x, const int y, const EntityType type) {
     to_add.push_back(entity_to_push);
 }
 
-Entity* EntityManager::getPlayer() {
+EntityBase* EntityManager::getPlayer() {
     return player;
 }
 
 void EntityManager::update(const int elapsed) {
     releaseDead();
-    for (Entity* entity : entities)
+    for (EntityBase* entity : entities)
         entity->update(elapsed);
 
     // Add entities
-    for (Entity* entity : to_add)
+    for (EntityBase* entity : to_add)
         entities.push_back(entity);
     to_add.clear();
 
@@ -61,7 +59,7 @@ void EntityManager::clear() {
 // Private methods
 
 void EntityManager::releaseAll() {
-    for (Entity* entity : entities){
+    for (EntityBase* entity : entities){
         entity->kill();
         delete entity;
     }
@@ -70,7 +68,7 @@ void EntityManager::releaseAll() {
 
 void EntityManager::releaseDead() {
     for(auto iter = entities.begin(); iter != entities.end();) {
-        Entity* entity = *iter;
+        EntityBase* entity = *iter;
         if (entity->isDead()) {
             iter = entities.erase(iter);
             entity->kill();
@@ -82,8 +80,8 @@ void EntityManager::releaseDead() {
 }
 
 void EntityManager::resolveCollisions() {
-    for (Entity* entity_1 : entities)
-        for (Entity* entity_2 : entities) 
+    for (EntityBase* entity_1 : entities)
+        for (EntityBase* entity_2 : entities) 
             if (entity_1 != entity_2 && entity_1->getCoords() == entity_2->getCoords()) {
                 entity_1->onCollision(entity_2->getType());
                 entity_2->onCollision(entity_1->getType());               

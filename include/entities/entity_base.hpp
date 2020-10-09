@@ -1,19 +1,19 @@
 #pragma once
 #include <utility>
+#include "base/game_element.hpp"
 
-#include "game_object.hpp"
 
 enum class EntityType;
 
-class Entity: public GameObject {
+class EntityBase: public GameElement {
 private:
     // Dead flag
     bool is_dead;
     // Entity type
     EntityType type;
 public:
-    Entity(const int x, const int y, int entity_ch, EntityType type, Game* game);
-    virtual ~Entity();
+    EntityBase(const int x, const int y, int entity_ch, EntityType type, Game* game);
+    virtual ~EntityBase();
 
     // Returns coordinates of entity
     std::pair<int, int> getCoords();

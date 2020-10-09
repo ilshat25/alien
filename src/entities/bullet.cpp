@@ -1,22 +1,21 @@
-#include "bullet.hpp"
+#include "entities/bullet.hpp"
 #include "game.hpp"
-#include "ncurses.h"
 
 
 // Public methods
 
 Bullet::Bullet(const int x, const int y, Game* game):
-    Entity(x, y, ACS_BULLET, EntityType::BULLET, game)
+    EntityBase(x, y, ACS_BULLET, EntityType::BULLET, game)
 {}
 
 Bullet::~Bullet() {}
 
 void Bullet::update(const int elapsed) {
-    Entity::update(elapsed);
+    EntityBase::update(elapsed);
 
-    if (elapsed_time > interval) {
+    if (current_elapsed_time > interval) {
         if (!move()) setDead();
-        elapsed_time -= interval;
+        current_elapsed_time -= interval;
     }
 }
 

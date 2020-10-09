@@ -1,21 +1,21 @@
-#include "asteroid.hpp"
+#include "entities/asteroid.hpp"
 #include "game.hpp"
 
 
 // Public methods
 
 Asteroid::Asteroid(const int x, const int y, Game* game):
-    Entity(x, y, ACS_DIAMOND, EntityType::ASTEROID, game)
+    EntityBase(x, y, ACS_DIAMOND, EntityType::ASTEROID, game)
 {}
 
 Asteroid::~Asteroid() {}
 
 void Asteroid::update(const int elapsed) {
-    Entity::update(elapsed);
+    EntityBase::update(elapsed);
 
-    if (elapsed_time > interval) {
+    if (current_elapsed_time > interval) {
         if (!move()) setDead();
-        elapsed_time -= interval;
+        current_elapsed_time -= interval;
     }
 }
 

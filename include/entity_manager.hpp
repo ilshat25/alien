@@ -1,7 +1,10 @@
 #pragma once
 #include <vector>
 
-#include "entity.hpp"
+#include "entities/entity_base.hpp"
+#include "entities/bullet.hpp"
+#include "entities/asteroid.hpp"
+#include "entities/player.hpp"
 
 // Types of entities
 enum class EntityType {
@@ -14,12 +17,12 @@ enum class EntityType {
 class EntityManager {
 private:
     // Vector of entities
-    std::vector<Entity*> entities;
+    std::vector<EntityBase*> entities;
     // Vector of entities to add
-    std::vector<Entity*> to_add;
+    std::vector<EntityBase*> to_add;
 
     // Palyer entity or null if it doesn't exist
-    Entity* player;
+    EntityBase* player;
     // Game reference
     Game* game;
 
@@ -30,7 +33,7 @@ public:
     // Add entity to the manager
     void addEntity(const int x, const int y, const EntityType type);
     // Returns player reference or null if it doesn't exist
-    Entity* getPlayer();
+    EntityBase* getPlayer();
 
     void update(const int elapsed);
 

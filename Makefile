@@ -2,7 +2,7 @@ CXX 		:= g++
 CXX_FLAGS 	:= -std=c++17 -ggdb -Wall -Wextra
 
 BIN 		:= bin
-SRC 		:= src
+SRC 		:= src src/entities src/base
 INCLUDE 	:= include
 
 LIBRARIES 	:= -lncurses
@@ -15,7 +15,7 @@ run: clean all
 	clear
 	./$(BIN)/$(EXECUTABLE)
 
-$(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
+$(BIN)/$(EXECUTABLE): $(foreach d, $(SRC), $d/*.cpp)
 	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) $^ -o $@ $(LIBRARIES)
 
 clean:

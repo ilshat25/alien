@@ -1,7 +1,8 @@
 #pragma once
-#include "entity.hpp"
+#include "entities/entity_base.hpp"
 
-class Bullet : public Entity{
+
+class Bullet : public EntityBase{
 private:
     const int interval = 100000;
 public:
