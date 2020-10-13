@@ -5,7 +5,7 @@
 // Public methods
 
 Bullet::Bullet(const int x, const int y, Game* game):
-    EntityBase(x, y, ACS_BULLET, EntityType::BULLET, game)
+    EntityBase(x, y, ACS_BULLET, WindowColor::WINDOW_GREEN, EntityType::BULLET, game)
 {}
 
 Bullet::~Bullet() {}
@@ -19,7 +19,16 @@ void Bullet::update(const int elapsed) {
     }
 }
 
-void Bullet::onCollision(const EntityType) {
+void Bullet::onCollision(const EntityType type) {
+    switch (type)
+    {
+    case EntityType::ASTEROID:
+        game->addScore(5);
+        break;
+    case EntityType::AMMUNITION:
+        game->addScore(-10);
+        break;
+    }
     setDead();
 }
 

@@ -8,6 +8,7 @@ Game::Game():
     is_over(false),
     is_stopped(false)
 {
+    score = 0;
     resetField();
     entity_manager.addEntity(win_width / 2, win_height / 2, EntityType::PLAYER);
 }
@@ -30,6 +31,8 @@ void Game::update(const int elapsed) {
         // Upadete bullet panel
         const int bullet_count = static_cast<Player*>(entity_manager.getPlayer())->getBulletCount();
         bullet_panel.update(elapsed, bullet_count);
+
+        score_panel.update(elapsed, score);
 
         if (entity_manager.getPlayer()->isDead()) {
             // Stop the game
@@ -54,6 +57,7 @@ void Game::update(const int elapsed) {
 void Game::draw() {
     WindowElement::draw();
     bullet_panel.draw();
+    score_panel.draw();
 }
 
 bool Game::isOver() {
@@ -72,6 +76,14 @@ void Game::resume() {
     is_stopped = false;
 }
 
+void Game::addScore(const int dscore) {
+    score += dscore;
+}
+
+void Game::nullifyScore() {
+    score = 0;
+}
+
 // Private methods
 
 void Game::gameOverScreen() {
@@ -82,30 +94,48 @@ void Game::gameOverScreen() {
         field[win_height / 2    ][col] = ' ';
         field[win_height / 2 + 1][col] = ' ';
         field[win_height / 2 + 2][col] = '#';
+        color_pairs[win_height / 2 - 2][col] = COLOR_PAIR(WindowColor::WINDOW_WHITE);
+        color_pairs[win_height / 2 - 1][col] = COLOR_PAIR(WindowColor::WINDOW_WHITE);;
+        color_pairs[win_height / 2    ][col] = COLOR_PAIR(WindowColor::WINDOW_WHITE);;
+        color_pairs[win_height / 2 + 1][col] = COLOR_PAIR(WindowColor::WINDOW_WHITE);;
+        color_pairs[win_height / 2 + 2][col] = COLOR_PAIR(WindowColor::WINDOW_WHITE);;
     }
 
     std::string game_over_title = "Game over";
     // Set title
     int carriage_title = win_width / 2 - game_over_title.size() / 2;
     for (char ch : game_over_title)
-        field[win_height / 2 - 1][carriage_title++] = ch;
+        setCh(carriage_title++, win_height / 2 - 1, ch, WindowColor::WINDOW_WHITE);
+
+    std::string game_score_title = "Your score: " + std::to_string(score);
+    // Set score
+    carriage_title = win_width / 2 - game_score_title.size() / 2;
+    for (char ch : game_score_title)
+        setCh(carriage_title++, win_height / 2, ch, WindowColor::WINDOW_CYAN);
+
 
     std::string restart_title = "Do you want to restart? y/n";
     // Set restart offer
     carriage_title = win_width / 2 - restart_title.size() / 2;
     for (char ch : restart_title)
-        field[win_height / 2 + 1][carriage_title++] = ch;
+        setCh(carriage_title++, win_height / 2 + 1, ch, WindowColor::WINDOW_WHITE);
 
 }
 
 void Game::generateAsteroids() {
-    for (int row = 1; row < height - 1; ++row) if(rand() % 100 >= 80)
-        entity_manager.addEntity(width - 1, row, EntityType::ASTEROID);
+    for (int row = 1; row < height - 1; ++row) {
+        const int num = rand() % 100;
+        if (num >= 50)
+            entity_manager.addEntity(width - 1, row, EntityType::ASTEROID);
+        else if (num <= 20)
+            entity_manager.addEntity(width - 1, row, EntityType::AMMUNITION);
+    }
 }
 
 void Game::restart() {
     resetTime();
     resetField();
+    nullifyScore();
     entity_manager.clear();
     entity_manager.addEntity(width / 2, height / 2, EntityType::PLAYER);
     resume();

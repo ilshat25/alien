@@ -7,12 +7,12 @@ enum class EntityType;
 
 class EntityBase: public GameElement {
 private:
-    // Dead flag
     bool is_dead;
-    // Entity type
+    
     EntityType type;
+
 public:
-    EntityBase(const int x, const int y, int entity_ch, EntityType type, Game* game);
+    EntityBase(const int x, const int y, int entity_ch, const WindowColor color, EntityType type, Game* game);
     virtual ~EntityBase();
 
     // Returns coordinates of entity

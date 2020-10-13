@@ -5,7 +5,7 @@
 // Public methods
 
 Asteroid::Asteroid(const int x, const int y, Game* game):
-    EntityBase(x, y, ACS_DIAMOND, EntityType::ASTEROID, game)
+    EntityBase(x, y, ACS_BLOCK, WindowColor::WINDOW_YELLOW, EntityType::ASTEROID, game)
 {}
 
 Asteroid::~Asteroid() {}

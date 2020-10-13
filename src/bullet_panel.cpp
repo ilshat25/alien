@@ -16,7 +16,7 @@ void BulletPanel::update(const int elapsed_time, const int bullet_count) {
         const int bullet_string_size = bullet_count * 2 - 1;
         const int x_begin = win_width / 2 - bullet_string_size / 2;
         for (int i = 0; i < bullet_count; ++i)
-            setCh(x_begin + 2 * i, y_center, ACS_DIAMOND);
+            setCh(x_begin + 2 * i, y_center, ACS_DIAMOND, WindowColor::WINDOW_GREEN);
     }
 }
 

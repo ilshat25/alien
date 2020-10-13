@@ -18,10 +18,14 @@ WindowElement::~WindowElement() {
 }
 
 void WindowElement::draw() {
+    int color_num = 0;
     for (int row = 0; row < win_height; ++row)
         for (int col = 0; col < win_width; ++col) {
             wmove(win, row, col);
+            wattron(win, color_pairs[row][col]);
             waddch(win, field[row][col]);
+            wattroff(win, color_pairs[row][col]);
+            ++color_num;
         }
     wrefresh(win);
 }
@@ -38,9 +42,10 @@ bool WindowElement::isFree(const int x, const int y) {
     return field[y][x] == ' ';
 }
 
-bool WindowElement::setCh(const int x, const int y, const int ch) {
+bool WindowElement::setCh(const int x, const int y, const int ch, const WindowColor win_color) {
     if (isFree(x, y) && !isBorder(x, y)) {
         field[y][x] = ch;
+        color_pairs[y][x] = COLOR_PAIR(win_color);
         return true;
     }
     return false;
@@ -50,6 +55,7 @@ bool WindowElement::clearCh(const int x, const int y) {
     if (x <= 0 || x >= win_width - 1 || y <= 0 || y >= win_height - 1 || isBorder(x, y))
         return false;
     field[y][x] = ' ';
+    color_pairs[y][x] = COLOR_PAIR(0);
     return true;
 }
 
@@ -58,6 +64,9 @@ bool WindowElement::clearCh(const int x, const int y) {
 void WindowElement::resetField() {
     // Allocate memory fow win
     field.resize(win_height, std::vector<int>(win_width));
+    // Allocate memory for colors
+    color_pairs.resize(win_height, std::vector<int>(win_width, COLOR_PAIR(WindowColor::WINDOW_WHITE)));
+
 
     // Set border
     for (int row = 0; row < win_height; ++row)

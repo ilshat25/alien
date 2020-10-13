@@ -10,11 +10,15 @@ void curses_init() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     curs_set(0);
+    start_color();
+    use_default_colors();
 }
 
 int main(int argc, char** argv) {
     // Initializing ncurses library
     curses_init();
+    initColors();
+
 
     // Delay of the game
     const int delay = 1000;

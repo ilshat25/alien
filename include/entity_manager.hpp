@@ -5,12 +5,14 @@
 #include "entities/bullet.hpp"
 #include "entities/asteroid.hpp"
 #include "entities/player.hpp"
+#include "entities/ammunition.hpp"
 
 // Types of entities
 enum class EntityType {
     PLAYER,
     BULLET,
-    ASTEROID
+    ASTEROID,
+    AMMUNITION
 };
 
 // Manage all entities on the game

@@ -4,7 +4,7 @@
 // Public methods
 
 Player::Player(const int x, const int y, Game* game):
-    EntityBase(x, y, ACS_BOARD, EntityType::PLAYER, game),
+    EntityBase(x, y, ACS_RARROW, WindowColor::WINDOW_CYAN, EntityType::PLAYER, game),
     bullet_count(3)
 {}
 
@@ -16,7 +16,8 @@ bool Player::go(const int dx, const int dy) {
 
 void Player::update(const int elapsed) {
     EntityBase::update(elapsed);
-
+    
+    changePos(x, y);
     const int ch = getch();
     switch(ch) {
         case KEY_UP:
@@ -38,12 +39,17 @@ void Player::update(const int elapsed) {
 }
 
 void Player::onCollision(const EntityType type) {
-    setDead();
+    switch (type)
+    {
+    case EntityType::AMMUNITION:
+        addBullet();
+        break;
+    default:
+        setDead();
+        break;
+    }
 }
 
-void Player::addBullet() {
-    if (bullet_count < max_bullet_count) ++bullet_count;
-}
 
 int Player::getBulletCount() {
     return bullet_count;
@@ -56,4 +62,8 @@ void Player::shoot() {
         game->getEntityManager()->addEntity(x + 1, y, EntityType::BULLET);
         --bullet_count;
     }
+}
+
+void Player::addBullet() {
+    if (bullet_count < max_bullet_count) ++bullet_count;
 }

@@ -16,8 +16,8 @@ public:
 
     void onCollision(const EntityType type);
 
-    void addBullet();
     int getBulletCount();
 private:
+    void addBullet();
     void shoot();
 };

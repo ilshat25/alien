@@ -29,6 +29,9 @@ void EntityManager::addEntity(const int x, const int y, const EntityType type) {
         case EntityType::ASTEROID:
             entity_to_push = new Asteroid(x, y, game);
             break;
+        case EntityType::AMMUNITION:
+            entity_to_push = new Ammunition(x, y, game);
+            break;
     }
 
     to_add.push_back(entity_to_push);
@@ -80,10 +83,13 @@ void EntityManager::releaseDead() {
 }
 
 void EntityManager::resolveCollisions() {
-    for (EntityBase* entity_1 : entities)
-        for (EntityBase* entity_2 : entities) 
-            if (entity_1 != entity_2 && entity_1->getCoords() == entity_2->getCoords()) {
+    for (int i = 0; i < entities.size(); ++i)
+        for (int j = i + 1; j < entities.size(); ++j) {
+            EntityBase* entity_1 = entities[i];
+            EntityBase* entity_2 = entities[j];
+            if (entity_1->getCoords() == entity_2->getCoords()) {
                 entity_1->onCollision(entity_2->getType());
                 entity_2->onCollision(entity_1->getType());               
             }
+        }
 }

@@ -3,8 +3,8 @@
 
 // Public methods
 
-EntityBase::EntityBase(const int x, const int y, const int entity_ch, EntityType type, Game* game):
-    GameElement(x, y, entity_ch, game),
+EntityBase::EntityBase(const int x, const int y, const int entity_ch, const WindowColor win_color, EntityType type, Game* game):
+    GameElement(x, y, entity_ch, win_color, game),
     is_dead(false),
     type(type)
 {}
