@@ -4,7 +4,7 @@
 
 class Asteroid: public EntityBase {
 private:
-    const int interval = 200000;
+    int interval = 200000;
 public:
     Asteroid(const int x, const int y, Game* game);
     ~Asteroid();

@@ -13,10 +13,13 @@ private:
 
     bool is_over;
     bool is_stopped;
-
+    
     int score;
 
-    const int asteroid_interval = 1000000;
+    int asteroid_interval = 400000;
+    int asteroid_generation_chance;
+    int ammuniation_generation_chance;
+    int generation_count = 0;
 public:
     Game();
     ~Game();
